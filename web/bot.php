@@ -1,7 +1,7 @@
 <?php
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $message = (array) json_decode( file_get_contents( 'php://input' ) );
+    $message = json_decode( file_get_contents( 'php://input' ) );
     error_log("printing params");
     error_log(print_r($message, true));
     sendTextMessage($message, 'hello there');
@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendTextMessage($message, $text) {
-    $chat_id = $message['chat']['id'];
+    $chat_id = $message->chat->id;
     $params = array(
         "chat_id" => $chat_id,
         "text" => $text,
