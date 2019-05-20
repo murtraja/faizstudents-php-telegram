@@ -1,9 +1,10 @@
 <?php
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $message = json_decode( file_get_contents( 'php://input' ) );
-    error_log("printing params");
-    error_log(print_r($message, true));
+    $input = json_decode( file_get_contents( 'php://input' ) );
+    error_log("printing received input");
+    error_log(print_r($input, true));
+    $message = $input->message;
     sendTextMessage($message, 'hello there');
 } else {
     echo "You are not a bot, are you?";
