@@ -1,5 +1,5 @@
 <?php
-
+require_once '../vendor/autoload.php';
 use Predis\Client;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
