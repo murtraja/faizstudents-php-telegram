@@ -1,5 +1,7 @@
 <?php
 
+use Predis\Client;
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode( file_get_contents( 'php://input' ) );
     printVariable("Input:", $input);
