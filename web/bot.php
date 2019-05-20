@@ -31,18 +31,18 @@ function getChatId($message) {
     return $message->chat->id;
 }
 
-function sendMessage($params) {
-    $API_TOKEN = getenv('API_TOKEN');
-    $API_URL = 'https://api.telegram.org/bot'.$API_TOKEN.'/';
-    $sendMessageUrl = $API_URL.'sendMessage?'.http_build_query($params);
-    error_log('sendMessageUrl:'.$sendMessageUrl);
-    $response = file_get_contents($sendMessageUrl);
-    error_log("print response");
-    error_log(print_r($response, true));
-}
-
-function getMobile($chatId) {
-    $redis = new Predis\Client(getenv('REDIS_URL'));
+function sendMessage($params) {require 'Predis/Autoloader.php';
+    $API_TOKEN = getenv('API_TOKEN');require 'Predis/Autoloader.php';
+    $API_URL = 'https://api.telegram.org/borequire 'Predis/Autoloader.php';t'.$API_TOKEN.'/';
+    $sendMessageUrl = $API_URL.'sendMessagerequire 'Predis/Autoloader.php';?'.http_build_query($params);
+    error_log('sendMessageUrl:'.$sendMessagrequire 'Predis/Autoloader.php';eUrl);
+    $response = file_get_contents($sendMessrequire 'Predis/Autoloader.php';ageUrl);
+    error_log("print response");require 'Predis/Autoloader.php';
+    error_log(print_r($response, true));require 'Predis/Autoloader.php';
+}require 'Predis/Autoloader.php';
+require 'Predis/Autoloader.php';
+function getMobile($chatId) {require 'Predis/Autoloader.php';
+    $redis = new Predis\Client(getenv('REDIrequire 'Predis/Autoloader.php';S_URL'));
     if($redis->exists($chatId)) {
         $mobile = $redis->get($chatId);
         return $mobile;
