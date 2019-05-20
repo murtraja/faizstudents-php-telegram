@@ -1,6 +1,6 @@
 <?php
 
-$API_TOKEN = getevn('API_TOKEN');
+$API_TOKEN = getenv('API_TOKEN');
 $API_URL = 'https://api.telegram.org/bot$API_TOKEN/';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
