@@ -1,8 +1,5 @@
 <?php
 
-$API_TOKEN = getenv('API_TOKEN');
-$API_URL = 'https://api.telegram.org/bot$API_TOKEN/';
-
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = (array) json_decode( file_get_contents( 'php://input' ) );
     error_log("printing params");
@@ -19,6 +16,12 @@ function sendTextMessage($message, $text) {
         "chat_id" => $chat_id,
         "text" => $text,
     );
+    sendMessage($message, $params);
+}
+
+function sendMessage($message, $params) {
+    $API_TOKEN = getenv('API_TOKEN');
+    $API_URL = 'https://api.telegram.org/bot$API_TOKEN/';
     $sendMessageUrl = $API_URL.'sendMessage/?'.http_build_query($params);
     error_log('sendMessageUrl:'.$sendMessageUrl);
     $response = file_get_contents($sendMessageUrl);
