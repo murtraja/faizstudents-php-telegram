@@ -14,6 +14,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mobile = getMobile($chatId);
     if($mobile === false) {
         sendPhoneNumberRequest($chatId);
+        exit();
     }
     sendTextMessage($chatId, 'hello there');
 } else {
@@ -58,6 +59,21 @@ function printVariable($text, $variable) {
 }
 
 function sendPhoneNumberRequest($chatId) {
-    sendTextMessage($chatId, "Send phone number");
+    $keyboard = array(array(array(
+        "text" => "Send phone number",
+        "request_contact" => true
+    )));
+
+    $replyMarkup = array(
+        "one_time_keyboard" => true,
+        "keyboard" => $keyboard
+    );
+
+    $params = array(
+        "chat_id" => $chatId,
+        "text" => "Please click on send phone number",
+        "reply_markup" => json_encode($replyMarkup)
+    );
+    sendMessage($params);
 }
 ?>
