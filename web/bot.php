@@ -40,8 +40,8 @@ function handleMessage($message, $mobile) {
         }
         $amount = $word;
         $postParams = array(
-            "receipt_thali" =>  thali,
-            "receipt_amount" => amount,
+            "receipt_thali" =>  $thali,
+            "receipt_amount" => $amount,
             "mobile" => $mobile
         );
         $response = getServerReply($postParams);
