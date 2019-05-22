@@ -16,15 +16,85 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         handleAuthentication($message);
         exit();
     }
-    handleMessage($message);
+    handleMessage($message, $mobile);
 } else {
     echo "You are not a bot, are you?";
     error_log("This should be logged");
 }
 
-function handleMessage($message) {
+function handleMessage($message, $mobile) {
     $chatId = getChatId($message);
-    sendTextMessage($chatId, "Authenticated");
+    $userInput = $message->text;
+    $userInputArgs = expolode(" ", $userInput);
+    if(sizeof($userInputArgs) === 2) {
+        $word = $userInputArgs[0];
+        if(!isValidNumber($word)) {
+            sendInvalidNumberMessage($chatId, $word);
+            return;
+        }
+        $thali = $word;
+        $word = $userInputArgs[1];
+        if(!isValidNumber($word)) {
+            sendInvalidNumberMessage($chatId, $word);
+            return;
+        }
+        $amount = $word;
+        $postParams = array(
+            "receipt_thali" =>  thali,
+            "receipt_amount" => amount,
+            "mobile" => $mobile
+        );
+        $response = getServerReply($postParams);
+        sendTextMessage($chatId, $response);
+    } elseif (sizeof($userInputArgs) === 1) {
+        $word = $userInputArgs[0];
+        if(!isValidNumber($word)) {
+            sendInvalidNumberMessage($chatId, $word);
+            return;
+        }
+        $receipt = $word;
+        sendTextMessage($chatId, "Received Receipt#".$receipt);
+    } else {
+        sendTextMessage($chatId, "Too many arguments received. Max 2 allowed.");
+    }
+}
+
+function getServerReply($data) {
+    $url = 'http://faizstudents.com/users/_payhoob.php';
+
+    // use key 'http' even if you send the request to https
+    $headers = array(
+        "Content-type: application/x-www-form-urlencoded",
+        "User-Agent: Googlebot/2.1 (+http://www.googlebot.com/bot.html)"
+    );
+    $options = array(
+        'http' => array(
+            'header'  => $headers,
+            'method'  => 'POST',
+            'content' => http_build_query($data)
+        )
+    );
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    if ($result === FALSE) { 
+        /* Handle error */ 
+        error_log("There was an error while posting to server");
+        return "ERROR";
+    }
+    error_log("server response: ".$result);
+    return $result;
+}
+
+function sendInvalidNumberMessage($chatId, $word) {
+    $message = $word." is not a valid number. Please enter a valid number.";
+    sendTextMessage($chatId, $message);
+}
+
+function isValidNumber($word) {
+    if ($input[0] == '-') {
+        return ctype_digit(substr($input, 1));
+    }
+    return ctype_digit($input);
 }
 
 function sendTextMessage($chatId, $text) {
