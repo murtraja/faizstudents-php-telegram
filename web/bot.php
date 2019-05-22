@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 function handleMessage($message, $mobile) {
     $chatId = getChatId($message);
     $userInput = $message->text;
-    $userInputArgs = expolode(" ", $userInput);
+    $userInputArgs = explode(" ", $userInput);
     if(sizeof($userInputArgs) === 2) {
         $word = $userInputArgs[0];
         if(!isValidNumber($word)) {
