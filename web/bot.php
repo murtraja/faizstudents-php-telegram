@@ -90,7 +90,7 @@ function sendInvalidNumberMessage($chatId, $word) {
     sendTextMessage($chatId, $message);
 }
 
-function isValidNumber($word) {
+function isValidNumber($input) {
     if ($input[0] == '-') {
         return ctype_digit(substr($input, 1));
     }
