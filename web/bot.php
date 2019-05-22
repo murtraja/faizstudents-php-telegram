@@ -91,7 +91,9 @@ function sendPhoneNumberRequest($chatId) {
 }
 
 function receivePhoneNumber($chatId, $contact) {
-    $mobile = $contact->phone_number
+    $mobile = $contact->phone_number;
+    storeMobile($chatId, $mobile);
+    sendTextMessage($chatId, "Thank you for your number ".$mobile);
 }
 
 function handleAuthentication($message) {
