@@ -13,13 +13,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $mobile = getMobile($chatId);
     if($mobile === false) {
-        sendPhoneNumberRequest($chatId);
+        handleAuthentication($message);
         exit();
     }
-    sendTextMessage($chatId, 'hello there');
+    handleMessage($message);
 } else {
     echo "You are not a bot, are you?";
     error_log("This should be logged");
+}
+
+function handleMessage($message) {
+    $chatId = getChatId($message);
+    sendTextMessage($chatId, "Authenticated");
 }
 
 function sendTextMessage($chatId, $text) {
@@ -45,12 +50,20 @@ function sendMessage($params) {
 }
 
 function getMobile($chatId) {
+    $chatId = (string) $chatId;
     $redis = new Predis\Client(getenv('REDIS_URL'));
     if($redis->exists($chatId)) {
         $mobile = $redis->get($chatId);
         return $mobile;
     }
     return false;
+}
+
+function storeMobile($chatId, $mobile) {
+    $chatId = (string) $chatId;
+    $mobile = (string) $mobile;
+    $redis = new Predis\Client(getenv('REDIS_URL'));
+    $redis->set($chatId, $mobile);
 }
 
 function printVariable($text, $variable) {
@@ -75,5 +88,19 @@ function sendPhoneNumberRequest($chatId) {
         "reply_markup" => json_encode($replyMarkup)
     );
     sendMessage($params);
+}
+
+function receivePhoneNumber($chatId, $contact) {
+    $mobile = $contact->phone_number
+}
+
+function handleAuthentication($message) {
+    $chatId = getChatId($message);
+    $contact = $message->contact;
+    if($contact) {
+        receivePhoneNumber($chatId, $contact);
+        return;
+    }
+    sendPhoneNumberRequest($chatId);
 }
 ?>
