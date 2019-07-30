@@ -60,7 +60,7 @@ function handleMessage($message, $mobile) {
 }
 
 function getServerReply($data) {
-    $url = 'http://faizstudents.com/users/_payhoob.php';
+    $url = 'https://faizstudents.com/users/_payhoob.php';
 
     // use key 'http' even if you send the request to https
     $headers = array(
