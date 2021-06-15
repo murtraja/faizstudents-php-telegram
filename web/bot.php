@@ -155,7 +155,7 @@ function sendPhoneNumberRequest($chatId) {
     $params = array(
         "chat_id" => $chatId,
         "text" => "Please click on send phone number",
-        "reply_markup" => json_encode($replyMarkup)
+        "reply_markup" => $replyMarkup
     );
     sendMessage($params);
 }
