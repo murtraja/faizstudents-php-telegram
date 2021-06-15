@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode( file_get_contents( 'php://input' ) );
     printVariable("Input:", $input);
 
-    $message = $input->my_chat_member;
+    $message = $input->message;
     
     $chatId = getChatId($message);
     printVariable("Chat Id:", $chatId);
@@ -88,6 +88,7 @@ function getServerReply($data) {
 function sendInvalidNumberMessage($chatId, $word) {
     $message = $word." is not a valid number. Please enter a valid number.";
     sendTextMessage($chatId, $message);
+    sendPhoneNumberRequest($chatId);
 }
 
 function isValidNumber($input) {
