@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode( file_get_contents( 'php://input' ) );
     printVariable("Input:", $input);
 
-    $message = $input->message;
+    $message = $input->my_chat_member;
     
     $chatId = getChatId($message);
     printVariable("Chat Id:", $chatId);
@@ -155,7 +155,7 @@ function sendPhoneNumberRequest($chatId) {
     $params = array(
         "chat_id" => $chatId,
         "text" => "Please click on send phone number",
-        "reply_markup" => $replyMarkup
+        "reply_markup" => json_encode($replyMarkup)
     );
     sendMessage($params);
 }
