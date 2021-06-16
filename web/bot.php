@@ -7,7 +7,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     printVariable("Input:", $input);
 
     $message = $input->message;
-    
+    if (empty($message)) 
+    {
+        $message = $input->my_chat_member;
+    }    
     $chatId = getChatId($message);
     printVariable("Chat Id:", $chatId);
     
@@ -88,7 +91,6 @@ function getServerReply($data) {
 function sendInvalidNumberMessage($chatId, $word) {
     $message = $word." is not a valid number. Please enter a valid number.";
     sendTextMessage($chatId, $message);
-    sendPhoneNumberRequest($chatId);
 }
 
 function isValidNumber($input) {
