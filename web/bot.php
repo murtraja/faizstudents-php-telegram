@@ -15,6 +15,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     printVariable("Chat Id:", $chatId);
     
     $mobile = getMobile($chatId);
+    printVariable("mobile:", $mobile);
     if($mobile === false) {
         handleAuthentication($message);
         exit();
