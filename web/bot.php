@@ -6,16 +6,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode( file_get_contents( 'php://input' ) );
     printVariable("Input:", $input);
 
-    $message = $input->message;
-    if (empty($message)) 
-    {
-        $message = $input->my_chat_member;
-    }    
+    $message = $input->message;  
     $chatId = getChatId($message);
     printVariable("Chat Id:", $chatId);
     
     $mobile = getMobile($chatId);
-    printVariable("mobile:", $mobile);
     if($mobile === false) {
         handleAuthentication($message);
         exit();
