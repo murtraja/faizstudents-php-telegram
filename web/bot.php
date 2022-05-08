@@ -98,13 +98,13 @@ function handleMessage($message, $mobile) {
 
 <b>Stop date:</b> $stop_date
 
-<b>Prev year pending:</b> $prev_year_pending
+<b>Prev year pending:</b> ₹$prev_year_pending
 
-<b>Cur year takhmeen:</b> $cur_year_takhmeen
+<b>Cur year takhmeen:</b> ₹$cur_year_takhmeen
 
-<b>Paid:</b> $paid
+<b>Paid:</b> ₹$paid
 
-<b>Total pending:</b> $pending
+<b>Total pending:</b> ₹$pending
 
 CONTENT;
         sendTextMessage($chatId, $content, false, true);
