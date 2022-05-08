@@ -82,29 +82,29 @@ function handleMessage($message, $mobile) {
         $paid = "0";
         $pending = "54700";
         $content = <<<CONTENT
-*Thali No.:* $thali
+<b>Thali No.:</b> $thali
 
-*Name:* $name
+<b>Name:</b> $name
 
-*Mob No.:* $mobile_no
+<b>Mob No.:</b> $mobile_no
 
-*Active:* $active
+<b>Active:</b> $active
 
-*Transporter:* $transporter
+<b>Transporter:</b> $transporter
 
-*Address:* ||$address||
+<b>Address:</b> ||$address||
 
-*Start date:* $start_date
+<b>Start date:</b> $start_date
 
-*Stop date:* $stop_date
+<b>Stop date:</b> $stop_date
 
-*Prev year pending:* $prev_year_pending
+<b>Prev year pending:</b> $prev_year_pending
 
-*Cur year takhmeen:* $cur_year_takhmeen
+<b>Cur year takhmeen:</b> $cur_year_takhmeen
 
-*Paid:* $paid
+<b>Paid:</b> $paid
 
-*Total pending:* $pending
+<b>Total pending:</b> $pending
 
 CONTENT;
         sendTextMessage($chatId, $content, false, true);
