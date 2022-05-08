@@ -107,7 +107,7 @@ function handleMessage($message, $mobile) {
 *Total pending:* $pending
 
 CONTENT;
-        sendTextMessage($chatId, $content, true);
+        sendTextMessage($chatId, $content, false);
     } else {
         sendTextMessage($chatId, "Invalid number of arguments received. Should be either 3 or 4.");
     }
