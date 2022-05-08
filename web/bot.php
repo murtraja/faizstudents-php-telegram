@@ -107,7 +107,7 @@ function handleMessage($message, $mobile) {
 *Total pending:* $pending
 
 CONTENT;
-        sendTextMessage($chatId, $content, false);
+        sendTextMessage($chatId, $content, false, true);
     } else {
         sendTextMessage($chatId, "Invalid number of arguments received. Should be either 3 or 4.");
     }
@@ -164,13 +164,16 @@ function isValidReceiptType($word) {
     return false;
 }
 
-function sendTextMessage($chatId, $text, $markdown=false) {
+function sendTextMessage($chatId, $text, $markdown=false, $html=false) {
     $params = array(
         "chat_id" => $chatId,
         "text" => $text,
     );
     if ($markdown) {
         $params['parse_mode'] = 'MarkdownV2';
+    }
+    if ($html) {
+        $params['parse_mode'] = 'HTML';
     }
     sendMessage($params);
 }
