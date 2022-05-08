@@ -69,8 +69,45 @@ function handleMessage($message, $mobile) {
             sendInvalidNumberMessage($chatId, $word);
             return;
         }
-        $receipt = $word;
-        sendTextMessage($chatId, "Received Receipt#".$receipt);
+        $thali = $word;
+        $name = "Mustafa bhai Shaikh Hatim bhai Manawarwala";
+        $mobile_no = "9049378652";
+        $active = "No";
+        $transporter = "Nasir bhai";
+        $address = "B1-304, Kingston Serene, Autadwadi, Handewadi, Near Pinacho Restaurant, Undri";
+        $start_date = "Invalid Date";
+        $stop_date = "Invalid Date";
+        $prev_year_pending = "24700";
+        $cur_year_takhmeen = "30000";
+        $paid = "0";
+        $pending = "54700";
+        $content = <<<CONTENT
+*Thali No.:* $thali
+
+*Name:* $name
+
+*Mob No.:* $mobile_no
+
+*Active:* $active
+
+*Transporter:* $transporter
+
+*Address:* ||$address||
+
+*Start date:* $start_date
+
+*Stop date:* $stop_date
+
+*Prev year pending:* $prev_year_pending
+
+*Cur year takhmeen:* $cur_year_takhmeen
+
+*Paid:* $paid
+
+*Total pending:* $pending
+
+CONTENT;
+        sendTextMessage($chatId, $content, true);
     } else {
         sendTextMessage($chatId, "Invalid number of arguments received. Should be either 3 or 4.");
     }
@@ -127,11 +164,14 @@ function isValidReceiptType($word) {
     return false;
 }
 
-function sendTextMessage($chatId, $text) {
+function sendTextMessage($chatId, $text, $markdown=false) {
     $params = array(
         "chat_id" => $chatId,
         "text" => $text,
     );
+    if ($markdown) {
+        $params['parse_mode'] = 'MarkdownV2';
+    }
     sendMessage($params);
 }
 
