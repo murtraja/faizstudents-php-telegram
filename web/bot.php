@@ -55,6 +55,10 @@ function handleMessage($message, $mobile) {
             "payment" => ucfirst($receipt_type), # 'Cash' or 'Bank'
         );
         if($receipt_type == 'bank') {
+            if ($countInputArgs !== 4) {
+                sendTextMessage($chatId, "Please provide transaction id also. <thali> <amount> bank <tran id>");
+                return;
+            }
             $postParams["transaction_id"] = $userInputArgs[3];
         }
         $response = getServerReply($postParams);
