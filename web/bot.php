@@ -41,21 +41,22 @@ function handleMessage($message, $mobile) {
         }
         $amount = $word;
 
-        $word = $userInputArgs[2];
+        $word = strtolower($userInputArgs[2]);
         if(!isValidReceiptType($word)) {
             sendInvalidReceiptTypeMessage($chatId, $word);
             return;
         }
-        $receipt_type = strtolower($word);
+        $receipt_type = $word;
 
-        if($receipt_type == 'bank') {
-            $transactionId = $userInputArgs[3];
-        }
         $postParams = array(
             "receipt_thali" =>  $thali,
             "receipt_amount" => $amount,
-            "mobile" => $mobile
+            "mobile" => $mobile,
+            "payment" => ucfirst($receipt_type), # 'Cash' or 'Bank'
         );
+        if($receipt_type == 'bank') {
+            $postParams["transaction_id"] = $userInputArgs[3];
+        }
         $response = getServerReply($postParams);
         sendTextMessage($chatId, $response);
     } elseif (sizeof($userInputArgs) === 1) {
