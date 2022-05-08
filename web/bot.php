@@ -6,7 +6,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode( file_get_contents( 'php://input' ) );
     printVariable("Input:", $input);
 
-    $message = $input->message;  
+    $message = $input->message;
+    
     $chatId = getChatId($message);
     printVariable("Chat Id:", $chatId);
     
@@ -25,7 +26,8 @@ function handleMessage($message, $mobile) {
     $chatId = getChatId($message);
     $userInput = $message->text;
     $userInputArgs = explode(" ", $userInput);
-    if(sizeof($userInputArgs) === 2) {
+    $countInputArgs = sizeof($userInputArgs);
+    if($countInputArgs === 3 || $countInputArgs === 4) {
         $word = $userInputArgs[0];
         if(!isValidNumber($word)) {
             sendInvalidNumberMessage($chatId, $word);
@@ -38,6 +40,17 @@ function handleMessage($message, $mobile) {
             return;
         }
         $amount = $word;
+
+        $word = $userInputArgs[2];
+        if(!isValidReceiptType($word)) {
+            sendInvalidReceiptTypeMessage($chatId, $word);
+            return;
+        }
+        $receipt_type = strtolower($word);
+
+        if($receipt_type == 'bank') {
+            $transactionId = $userInputArgs[3];
+        }
         $postParams = array(
             "receipt_thali" =>  $thali,
             "receipt_amount" => $amount,
@@ -54,7 +67,7 @@ function handleMessage($message, $mobile) {
         $receipt = $word;
         sendTextMessage($chatId, "Received Receipt#".$receipt);
     } else {
-        sendTextMessage($chatId, "Too many arguments received. Max 2 allowed.");
+        sendTextMessage($chatId, "Invalid number of arguments received. Should be either 3 or 4.");
     }
 }
 
@@ -94,6 +107,19 @@ function isValidNumber($input) {
         return false;
     }
     return ctype_digit($input);
+}
+
+function sendInvalidReceiptTypeMessage($chatId, $word) {
+    $message = $word." is not a valid receipt type. Enter either cash or bank.";
+    sendTextMessage($chatId, $message);
+}
+
+function isValidReceiptType($word) {
+    $word_lower = strtolower($word);
+    if ($word_lower === 'cash' || $word_lower === 'bank') {
+        return true;
+    }
+    return false;
 }
 
 function sendTextMessage($chatId, $text) {
