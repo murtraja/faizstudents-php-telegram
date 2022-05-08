@@ -92,7 +92,7 @@ function handleMessage($message, $mobile) {
 
 <b>Transporter:</b> $transporter
 
-<b>Address:</b> ||$address||
+<b>Address:</b> <tg-spoiler>$address<tg-spoiler>
 
 <b>Start date:</b> $start_date
 
