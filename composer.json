@@ -4,7 +4,8 @@
     "monolog/monolog": "^1.22",
     "twig/twig": "^2.0",
     "symfony/twig-bridge": "^3",
-    "predis/predis": "1.0.3"
+    "predis/predis": "1.0.3",
+    "geniusts/hijri-dates": "^1.1"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
