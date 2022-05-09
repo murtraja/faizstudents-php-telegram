@@ -70,17 +70,21 @@ function handleMessage($message, $mobile) {
             return;
         }
         $thali = $word;
-        $name = "Mustafa bhai Shaikh Hatim bhai Manawarwala";
-        $mobile_no = "9049378652";
-        $active = "No";
-        $transporter = "Nasir bhai";
-        $address = "B1-304, Kingston Serene, Autadwadi, Handewadi, Near Pinacho Restaurant, Undri";
-        $start_date = "Invalid Date";
-        $stop_date = "Invalid Date";
-        $prev_year_pending = "24700";
-        $cur_year_takhmeen = "30000";
-        $paid = "0";
-        $pending = "54700";
+        $result = getThaliDetailsFromServer($thali);
+        if(array_key_exists('error', $result)) {
+            $error = $result['error'];
+            sendTextMessage($chatId, $error);
+            return;
+        }
+        $name               = $result['NAME'];
+        $mobile_no          = $result['CONTACT'];
+        $active             = $result['Active'];
+        $transporter        = $result['Transporter'];
+        $address            = $result['Full_Address'];
+        $prev_year_pending  = $result['Previous_Due'];
+        $cur_year_takhmeen  = $result['yearly_hub'];
+        $paid               = $result['Paid'];
+        $pending            = $result['Total_Pending'];
         $content = <<<CONTENT
 <b>Thali No.:</b> $thali
 
@@ -93,10 +97,6 @@ function handleMessage($message, $mobile) {
 <b>Transporter:</b> $transporter
 
 <b>Address:</b> <tg-spoiler>$address</tg-spoiler>
-
-<b>Start date:</b> $start_date
-
-<b>Stop date:</b> $stop_date
 
 <b>Prev year pending:</b> ₹$prev_year_pending
 
@@ -137,6 +137,32 @@ function getServerReply($data) {
     }
     error_log("server response: ".$result);
     return $result;
+}
+
+function getThaliDetailsFromServer($thali) {
+    $data = array(
+        'thalino' => $thali,
+        'api_key' => getenv('faiz_api_key')
+    );
+    $params = http_build_query($data);
+    $url = "https://faizstudents.com/users/_fetch_thali_details.php?$params";
+    $result = file_get_contents($url);
+    if ($result === FALSE) { 
+        /* Handle error */ 
+        error_log("There was an error while posting to server");
+        return array('error' => "Couldn't post the request to server");;
+    }
+    error_log("server response: ".$result);
+    if($result === 'null') {
+        return array('error' => "Thali $thali doesn't exist or there's an unknown error");
+    }
+
+    $result_json = json_decode($result, true);
+    if($result_json === null) {
+        return array('error' => "Error: ".$result);
+    }
+
+    return $result_json;
 }
 
 function sendInvalidNumberMessage($chatId, $word) {
