@@ -75,7 +75,7 @@ function handleMessage($message, $mobile) {
         $active = "No";
         $transporter = "Nasir bhai";
         $address = "B1-304, Kingston Serene, Autadwadi, Handewadi, Near Pinacho Restaurant, Undri";
-        $start_date = getHijriYear();
+        $start_date = "Invalid Date";
         $stop_date = "Invalid Date";
         $prev_year_pending = "24700";
         $cur_year_takhmeen = "30000";
@@ -92,7 +92,7 @@ function handleMessage($message, $mobile) {
 
 <b>Transporter:</b> $transporter
 
-<b>Address:</b> $address
+<b>Address:</b> <tg-spoiler>$address</tg-spoiler>
 
 <b>Start date:</b> $start_date
 
@@ -247,10 +247,5 @@ function handleAuthentication($message) {
         return;
     }
     sendPhoneNumberRequest($chatId);
-}
-
-function getHijriYear() {
-    $now = \GeniusTS\HijriDate\Date::now();
-    return $now->format('Y');
 }
 ?>
